@@ -20,6 +20,10 @@ function stopRKey(evt) {
     var evt = (evt) ? evt : ((event) ? event : null); var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); if ((evt.keyCode == 13) && (node.type == "text")) { return false; }
 }
 
+function formatISNBN(evt) {
+
+}
+
 $.prototype.loadGoogleBookData = function (settings) {
     $(this).click(function () {
         var isbn = $("#fieldISBN10").val() ? $("#fieldISBN10").val() : $("#fieldISBN13").val();
@@ -70,6 +74,34 @@ $.prototype.loadGoogleBookData = function (settings) {
                         subjects = subjects + obj['items'][0]['volumeInfo']['categories'][i] + ', ';
                     }
                     $("#fieldSubjects").val(subjects.substring(0, (subjects.length - 2)));
+                }
+            });
+        } else {
+            alert(settings.dataRequired);
+        }
+    });
+};
+
+$.prototype.loadClassificationData = function (settings) {
+    $(this).click(function () {
+        var isbn = $("#fieldISBN10").val() ? $("#fieldISBN10").val() : $("#fieldISBN13").val();
+
+        if (isbn) {
+            $.get((`https://openlibrary.org/api/books?format=json&jscmd=data&bibkeys=ISBN:${isbn}`), function (data) {
+                var obj = (data.constructor === String) ? jQuery.parseJSON(data) : data;
+
+                if(!(`ISBN:${isbn}` in obj)) {
+                    alert(settings.notFound);
+                } else {
+                    // SET FIELDS
+                    let ddc = obj[`ISBN:${isbn}`].classifications.dewey_decimal_class[0];
+                    if(ddc)
+                    {
+                        $("#fieldControlNumber").val(ddc);
+                        $("#fieldCatalogingAuthority").val("openlibrary.org");
+                    } else {
+                        alert(settings.notFound);
+                    }
                 }
             });
         } else {

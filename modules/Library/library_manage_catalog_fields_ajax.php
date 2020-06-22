@@ -89,6 +89,20 @@ if (isActionAccessible($guid, $connection2, '/modules/Library/library_manage_cat
             echo '<a class="gbooks" onclick="return false" href="#">'.__('Get Book Data From Google').'</a>';
             echo '</div>';
         }
+
+        // Add Classification data grabber
+        if ($values['name'] == 'Print Publication') {
+            echo '<script type="text/javascript">';
+                echo 'document.onkeypress = stopRKey;';
+                echo '$(".classification").loadClassificationData({
+                    "notFound": "'.__('The specified record cannot be found.').'",
+                    "dataRequired": "'.__('Please enter an ISBN13 or ISBN10 value before trying to get data.').'",
+                });';
+            echo '</script>';
+            echo '<div style="text-align: right">';
+            echo '<a class="classification" onclick="return false" href="#">'.__('Get Book Classification').'</a>';
+            echo '</div>';
+        }
     }
 
     echo $table->getOutput();
