@@ -95,7 +95,9 @@ $.prototype.loadClassificationData = function (settings) {
                 } else {
                     // SET FIELDS
                     let entry = obj[`ISBN:${isbn}`];
-                    let ddc = entry.classifications && entry.classifications.dewey_decimal_class[0] || null;
+                    let ddc = entry.classifications && 
+                        entry.classifications.dewey_decimal_class &&
+                        entry.classifications.dewey_decimal_class[0] || null;
                     if(ddc)
                     {
                         $("#fieldControlNumber").val(ddc);
