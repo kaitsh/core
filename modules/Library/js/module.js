@@ -94,13 +94,14 @@ $.prototype.loadClassificationData = function (settings) {
                     alert(settings.notFound);
                 } else {
                     // SET FIELDS
-                    let ddc = obj[`ISBN:${isbn}`].classifications.dewey_decimal_class[0];
+                    let entry = obj[`ISBN:${isbn}`];
+                    let ddc = entry.classifications && entry.classifications.dewey_decimal_class[0] || null;
                     if(ddc)
                     {
                         $("#fieldControlNumber").val(ddc);
                         $("#fieldCatalogingAuthority").val("openlibrary.org");
                     } else {
-                        alert(settings.notFound);
+                        alert(`${settings.notFound}\n\n Check ${entry.url}`);
                     }
                 }
             });
